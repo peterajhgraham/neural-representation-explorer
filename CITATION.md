@@ -69,4 +69,4 @@ If you publish results that build on the techniques this repo demonstrates rathe
 
 ## Data
 
-If you run `--mode real` and publish anything that uses the streamed recording, cite the original dandiset — DANDI assigns each one a canonical citation block on its dandiset landing page.
+If you run `--mode real` and publish anything that uses the streamed recording, cite the original dandiset - DANDI assigns each one a canonical citation block on its dandiset landing page.

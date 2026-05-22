@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Neural Representation Explorer — full analysis pipeline."""
+"""Neural Representation Explorer - full analysis pipeline."""
 
 import os
 import sys
@@ -121,7 +121,7 @@ def _plot_manifolds(pca_emb, umap_emb, labels):
             ax.text(cx, cy, name, color=color, fontsize=9, fontweight="bold",
                     ha="center", va="bottom",
                     transform=ax.transData)
-        ax.set_title(f"{title}  —  colored by K-Means cluster")
+        ax.set_title(f"{title}  -  colored by K-Means cluster")
         ax.set_xlabel(xl)
         ax.set_ylabel(yl)
         ax.grid(True, alpha=0.3)
@@ -138,7 +138,7 @@ def _plot_trajectory(umap_emb, state_labels):
     fig, axes = plt.subplots(1, 2, figsize=(14, 6), facecolor=BG)
     fig.suptitle("Neural Trajectory Through State Space", color=TEXT, fontsize=13)
 
-    # Left: color by time — shows the path the population traces
+    # Left: color by time - shows the path the population traces
     sc = axes[0].scatter(
         umap_emb[:, 0], umap_emb[:, 1],
         c=np.arange(n), cmap="plasma", s=6, alpha=0.7, edgecolors="none",
@@ -246,7 +246,7 @@ def _plot_firing_rate_heatmap(features, state_labels):
 
 
 def _plot_state_transitions(state_labels, n_states=4):
-    """Empirical Markov transition matrix — how often does each state follow each other?"""
+    """Empirical Markov transition matrix - how often does each state follow each other?"""
     T = np.zeros((n_states, n_states), dtype=int)
     for a, b in zip(state_labels[:-1], state_labels[1:]):
         T[a, b] += 1

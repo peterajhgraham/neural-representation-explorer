@@ -1,6 +1,6 @@
 """Convert binary/integer spike counts into continuous firing-rate features.
 
-Spike trains are point processes — sparse, noisy, and discontinuous — which
+Spike trains are point processes - sparse, noisy, and discontinuous - which
 makes them a poor input to PCA, UMAP, or any other Euclidean-geometry tool.
 The standard fix is to convolve each neuron's spike train with a smoothing
 kernel, producing a continuous firing-rate estimate at every timestep. This
@@ -44,7 +44,7 @@ def compute_firing_rates(spikes, sigma=10):
     -------
     firing_rates : ndarray (n_timesteps, n_neurons)
         Smoothed firing rates, transposed so each row is a "population
-        snapshot" — the natural input format for sklearn / UMAP.
+        snapshot" - the natural input format for sklearn / UMAP.
     """
     # ±3σ captures >99.7% of the Gaussian's mass; truncating beyond that
     # is standard practice and keeps the kernel a manageable length.

@@ -9,7 +9,7 @@ def cluster_states(features, k=4):
     Why K-Means, and why k = 4?
     ---------------------------
     K-Means is the simplest unsupervised method that returns hard cluster
-    labels — a good baseline before reaching for HDBSCAN, Gaussian mixtures,
+    labels - a good baseline before reaching for HDBSCAN, Gaussian mixtures,
     or HMMs. The intuition for using it here: if behavioral states form
     well-separated clouds in firing-rate space (the neural manifold
     hypothesis), then minimizing within-cluster variance should recover
@@ -25,7 +25,7 @@ def cluster_states(features, k=4):
     ----------
     features : ndarray (n_timesteps, n_neurons)
         Smoothed firing-rate vectors. Note that we cluster in the
-        *original* high-D space rather than in the 2-D embedding — UMAP
+        *original* high-D space rather than in the 2-D embedding - UMAP
         warps distances nonlinearly, so clustering its output would
         confound geometric distortion with population state.
     k : int

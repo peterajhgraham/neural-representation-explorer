@@ -8,7 +8,7 @@ neighborhood relationships in the high-D space, which is often what you
 want when the manifold is curved or when states form genuinely separated
 clusters (the typical case for behavioral-state data).
 
-Using both is standard practice — if PCA and UMAP agree on the cluster
+Using both is standard practice - if PCA and UMAP agree on the cluster
 structure, that's strong evidence the structure is in the data and not an
 artifact of either method.
 """
@@ -45,7 +45,7 @@ def compute_umap(features, n_neighbors=15, min_dist=0.1):
     """Nonlinear embedding via UMAP (McInnes et al., 2018).
 
     Where PCA captures global linear structure, UMAP captures local
-    topology — it learns a low-D embedding that preserves which
+    topology - it learns a low-D embedding that preserves which
     population-state vectors are *near* each other in high-D. For neural
     data this tends to make discrete behavioral states pop out as
     well-separated clusters even when they're not linearly separable.
