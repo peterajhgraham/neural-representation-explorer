@@ -149,20 +149,32 @@ A few things change once `state_labels` becomes uninformative:
 neural_representation_explorer/
 ├── run_pipeline.py              # full pipeline
 ├── requirements.txt
+├── CITATION.md
+├── neural_population_states.png
+├── .github/
+│   └── workflows/
+│       └── run_pipeline.yml
 ├── src/
+│   ├── __init__.py
 │   ├── simulate_spikes.py
 │   ├── compute_features.py
 │   ├── dimensionality.py
 │   └── clustering.py
 ├── loaders/
+│   ├── __init__.py
 │   └── nwb_loader.py            # DANDI/NWB streaming for --mode real
 ├── notebooks/
 │   └── explore_representations.ipynb
 └── results/                     # auto-generated
     ├── RESULTS.md
-    ├── manifolds.png  trajectory.png  spike_raster.png
-    ├── firing_rates.png  transitions.png  pca_variance.png
-    └── summary.json
+    ├── summary.json
+    ├── manifolds.png
+    ├── trajectory.png
+    ├── spike_raster.png
+    ├── firing_rates.png
+    ├── transitions.png
+    ├── pca_variance.png
+    └── cluster_distribution.png
 ```
 
 ---
