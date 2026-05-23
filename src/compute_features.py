@@ -1,32 +1,66 @@
+"""Convert binary/integer spike counts into continuous firing-rate features.
+
+Spike trains are point processes - sparse, noisy, and discontinuous - which
+makes them a poor input to PCA, UMAP, or any other Euclidean-geometry tool.
+The standard fix is to convolve each neuron's spike train with a smoothing
+kernel, producing a continuous firing-rate estimate at every timestep. This
+is the "instantaneous firing rate" of the systems-neuroscience literature.
+"""
+
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
 
 
 def compute_firing_rates(spikes, sigma=10):
-    """
-    Gaussian-kernel smoothed firing rates — fully vectorized, no Python loops.
+    """Gaussian-kernel smoothed firing rates, vectorized.
 
-    A Gaussian kernel applied via sliding_window_view replaces the old
-    box-window for-loop, giving smooth population-rate vectors at every
-    timestep and running ~20x faster on typical array sizes.
+    Why a Gaussian, and why σ = 10?
+    -------------------------------
+    A Gaussian kernel is the standard choice in neuroscience for converting
+    spike counts into a smooth rate signal: it's symmetric (no temporal
+    bias), has compact effective support, and corresponds to an optimal
+    minimum-MSE estimator under reasonable assumptions about the underlying
+    rate. The kernel width σ trades temporal resolution against noise:
+
+    - σ too small → the rate trace stays spiky, PCA/UMAP latch onto Poisson
+      noise instead of the behavioral signal.
+    - σ too large → fast state transitions get smeared across boundaries
+      and the manifold collapses.
+
+    σ = 10 bins corresponds to ~100 ms at our default 10-ms bin size,
+    which matches the timescale of cortical population dynamics during
+    spontaneous behavior (a few hundred ms per behavioral state). This is
+    the same order of magnitude used in Churchland et al. (2012) and most
+    Neuropixels analyses of behavioral-state structure.
 
     Parameters
     ----------
     spikes : ndarray (n_neurons, n_timesteps)
-    sigma  : Gaussian kernel width in timesteps
+        Binned spike counts.
+    sigma : float
+        Gaussian kernel standard deviation, in timesteps.
 
     Returns
     -------
-    features : ndarray (n_timesteps, n_neurons)  — smoothed firing rates
+    firing_rates : ndarray (n_timesteps, n_neurons)
+        Smoothed firing rates, transposed so each row is a "population
+        snapshot" - the natural input format for sklearn / UMAP.
     """
-    half_w = int(3 * sigma)
-    x = np.arange(-half_w, half_w + 1, dtype=float)
+    # ±3σ captures >99.7% of the Gaussian's mass; truncating beyond that
+    # is standard practice and keeps the kernel a manageable length.
+    half_window = int(3 * sigma)
+    x = np.arange(-half_window, half_window + 1, dtype=float)
     kernel = np.exp(-x ** 2 / (2 * sigma ** 2))
-    kernel /= kernel.sum()
+    kernel /= kernel.sum()  # normalize so smoothing preserves the mean rate
 
-    # Reflect-pad then take a (n_neurons, n_timesteps, kernel_size) view
-    padded = np.pad(spikes, ((0, 0), (half_w, half_w)), mode="reflect")
+    # Reflect-pad at the edges so the kernel doesn't bleed in zeros, which
+    # would artificially depress the rate at the start and end of the trace.
+    padded = np.pad(spikes, ((0, 0), (half_window, half_window)), mode="reflect")
+
+    # sliding_window_view + elementwise multiply + sum = vectorized 1-D
+    # convolution along the time axis. Faster and clearer than scipy here.
     windows = sliding_window_view(padded, len(kernel), axis=1)  # (n_neurons, T, K)
     smoothed = (windows * kernel).sum(axis=2)                   # (n_neurons, T)
 
-    return smoothed.T  # (n_timesteps, n_neurons)
+    # Transpose so each row is one population state vector at one timestep.
+    return smoothed.T

@@ -4,7 +4,7 @@ import numpy as np
 
 
 DANDISET_ID = "000003"
-BIN_SIZE_S = 0.01   # 10 ms bins — matches simulate_spikes timestep semantics
+BIN_SIZE_S = 0.01   # 10 ms bins - matches simulate_spikes timestep semantics
 MAX_DURATION_S = 20.0  # cap stream to keep n_timesteps ~2000
 
 
@@ -12,7 +12,7 @@ def load_nwb_spikes(dandiset_id: str = DANDISET_ID, n_timesteps: int = 2000) -> 
     """
     Pull the first NWB asset with a units table from *dandiset_id* on DANDI,
     bin spike times into a (n_neurons, n_timesteps) float32 array, and return
-    that array alongside a dummy state_labels vector of zeros — making this a
+    that array alongside a dummy state_labels vector of zeros - making this a
     drop-in replacement for simulate_spikes().
 
     Parameters
@@ -23,7 +23,7 @@ def load_nwb_spikes(dandiset_id: str = DANDISET_ID, n_timesteps: int = 2000) -> 
     Returns
     -------
     spikes       : ndarray (n_neurons, n_timesteps)
-    state_labels : ndarray (n_timesteps,) — all zeros
+    state_labels : ndarray (n_timesteps,) - all zeros
     """
     from dandi.dandiapi import DandiAPIClient
     import remfile
