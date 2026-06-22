@@ -17,10 +17,9 @@ def compute_firing_rates(spikes, sigma=10):
     Why a Gaussian, and why σ = 10?
     -------------------------------
     A Gaussian kernel is the standard choice in neuroscience for converting
-    spike counts into a smooth rate signal: it's symmetric (no temporal
-    bias), has compact effective support, and corresponds to an optimal
-    minimum-MSE estimator under reasonable assumptions about the underlying
-    rate. The kernel width σ trades temporal resolution against noise:
+    spike counts into a smooth rate signal: it's symmetric (no temporal bias)
+    and has compact effective support. The kernel width σ trades temporal
+    resolution against noise:
 
     - σ too small → the rate trace stays spiky, PCA/UMAP latch onto Poisson
       noise instead of the behavioral signal.

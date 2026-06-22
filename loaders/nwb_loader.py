@@ -50,7 +50,12 @@ def load_nwb_spikes(dandiset_id: str = DANDISET_ID, n_timesteps: int = 2000) -> 
 
 
 def _find_nwb_asset(dandiset):
-    """Return the first .nwb asset that contains a units table."""
+    """Return the first .nwb asset in the dandiset.
+
+    We don't open the file here to check for a units table - that would mean
+    streaming every candidate. Instead _bin_units raises a clear error if the
+    chosen file turns out to have no sorted units.
+    """
     for asset in dandiset.get_assets():
         if asset.path.endswith(".nwb"):
             return asset
