@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# Notebook-generated figures (results/ images are committed by CI)
+/neural_population_states.png
